@@ -33,3 +33,14 @@ GTEST_TEST(ReaderFactories, make)
 
     ASSERT_ANY_THROW(factories.getCapableReaders("not compatible"));
 }
+
+GTEST_TEST(ReaderFactories, conversion)
+{
+    adtf_file::Objects objects;
+    adtf_file::getObjects().push_back(std::make_shared<adtf_file::DefaultAdtfDatReaderFactory>());
+
+    auto factories = adtf::dat::getReaderFactories();
+
+    ASSERT_EQ(factories.make("ADTF DAT")->getReaderIdentifier(), "ADTF DAT");
+}
+

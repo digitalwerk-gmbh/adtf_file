@@ -177,7 +177,7 @@ void IndexedFileV100::freeBuffer()
 //*************************************************************************************************
 void IndexedFileV100::allocIndexTable(int size)
 { 
-    size; // currently unused
+    (void) size; // currently unused
 }
 
 //*************************************************************************************************
@@ -324,7 +324,7 @@ void*  IndexedFileV100::getCacheAddr()
 
 int IndexedFileV100::getSectorSize(const std::string& filename) const
 {
-    return utils5ext::getSectorSizeFor(filename);
+    return static_cast<int>(utils5ext::getSectorSizeFor(filename));
 }
 
 void* IndexedFileV100::internalMalloc(int size, bool use_segment_size)

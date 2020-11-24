@@ -429,10 +429,12 @@ void*  IndexedFileV110::getCacheAddr()
     return _cache;
 }
 
-static size_t local_get_default_sector_size()
+#ifndef WIN32
+static int local_get_default_sector_size()
 {
     return 512;
 }
+#endif //!WIN32
 
 int IndexedFileV110::getSectorSize(const a_util::filesystem::Path& filename) const
 {

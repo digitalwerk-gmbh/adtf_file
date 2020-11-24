@@ -37,10 +37,10 @@ class ReferencedFilesExtension
         ReferencedFilesExtension() = default;
         ReferencedFilesExtension(ReferencedFilesExtension&& reader);
         ReferencedFilesExtension& operator=(ReferencedFilesExtension&& reader);
-        ReferencedFilesExtension(const Reader& reader);
+        ReferencedFilesExtension(const BaseReader& reader);
         ReferencedFilesExtension(const std::vector<a_util::filesystem::Path>& files);
 
-        void read(const Reader& reader);
+        void read(const BaseReader& reader);
         void write(Writer& writer) const;
         void change(a_util::filesystem::Path filename) const;
 

@@ -28,6 +28,8 @@
 #include <adtf_file/sample.h>
 #include <adtf_file/stream_type.h>
 
+#include <sstream>
+
 #define A_UTIL5_RESULT_TO_EXCEPTION(__exp)\
 {\
     a_util::result::Result __result = (__exp);\
@@ -212,7 +214,6 @@ Reader::Reader(const std::string& file_name,
 Reader::~Reader()
 {
 }
-
 
 std::pair<std::shared_ptr<const StreamType>, std::shared_ptr<SampleDeserializer> > Reader::getInitialTypeAndSampleDeserializer(uint16_t stream_id)
 {
@@ -539,6 +540,35 @@ std::shared_ptr<const StreamType> Reader::buildType(const std::string& id, Input
     }
     _type_factories.Deserialize(id, stream, *property_type);
     return type;
+}
+
+void ReaderFactories::add(const std::shared_ptr<const ReaderFactory>& factory)
+{
+    _factories.push_back(factory);
+}
+
+std::unique_ptr<BaseReader> ReaderFactories::makeReader(const std::string& file_name,
+                                                        std::shared_ptr<SampleFactory> sample_factory,
+                                                        std::shared_ptr<StreamTypeFactory> stream_type_factory,
+                                                        bool ignore_unsupported_streams) const
+{
+    std::ostringstream error_string;
+    error_string << "unable to open '" << file_name << "'\n";
+
+    std::vector<std::pair<std::string, std::exception_ptr>> errors;
+    for (const auto factory: _factories)
+    {
+        try
+        {
+            return factory->makeReader(file_name, sample_factory, stream_type_factory, ignore_unsupported_streams);
+        }
+        catch (const std::exception& exception)
+        {
+            error_string << factory->getName() << ": " << exception.what() << "\n";
+        }
+    }
+
+    throw std::runtime_error(error_string.str());
 }
 
 }

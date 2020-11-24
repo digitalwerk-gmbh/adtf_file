@@ -1,0 +1,236 @@
+common:
+    files:
+        - CMakeLists.txt
+        - doc/license/MPL2.0.txt
+        - doc/license/used_licenses.md
+        - include/adtfdat_processing/adtfdat_file_reader.h
+        - include/adtfdat_processing/adtfdat_processing.h
+        - include/adtfdat_processing/configuration.h
+        - include/adtfdat_processing/ddl_helpers.h
+        - include/adtfdat_processing/demultiplexer.h
+        - include/adtfdat_processing/multiplexer.h
+        - include/adtfdat_processing/processor.h
+        - include/adtfdat_processing/reader.h
+        - include/adtf_file/adtf2/adtf2_adtf_core_media_sample_deserializer.h
+        - include/adtf_file/adtf2/adtf2_adtf_core_media_sample_serializer.h
+        - include/adtf_file/adtf2/adtf2_indexed_data_media_sample_deserializer.h
+        - include/adtf_file/adtf2/adtf2_sample_info.h
+        - include/adtf_file/adtf2/adtf2_stream_type_deserializers.h
+        - include/adtf_file/adtf2/adtf2_stream_type_serializers.h
+        - include/adtf_file/adtf2/legacy_types.h
+        - include/adtf_file/adtf3/adtf3_media_description_deserializer.h
+        - include/adtf_file/adtf3/adtf3_media_description_serializer.h
+        - include/adtf_file/adtf3/adtf3_sample_copy_deserializer.h
+        - include/adtf_file/adtf3/adtf3_sample_copy_serializer.h
+        - include/adtf_file/adtf3/adtf3_sample_info.h
+        - include/adtf_file/adtf3/adtf3_stream_type_deserializer.h
+        - include/adtf_file/adtf3/adtf3_stream_type_serializer.h
+        - include/adtf_file/adtf_file_reader.h
+        - include/adtf_file/adtf_file_writer.h
+        - include/adtf_file/base_reader.h
+        - include/adtf_file/default_sample.h
+        - include/adtf_file/file_extensions.h
+        - include/adtf_file/legacy_utils4_utils5_types.h
+        - include/adtf_file/object.h
+        - include/adtf_file/sample.h
+        - include/adtf_file/standard_adtf_file_reader.h
+        - include/adtf_file/standard_factories.h
+        - include/adtf_file/stream_item.h
+        - include/adtf_file/stream_type.h
+        - include/ifhd/ifhd.h
+        - include/ifhd/indexedfile_pkg.h
+        - include/ifhd/indexedfile_types.h
+        - include/ifhd/v100/indexedfilereader_v100.h
+        - include/ifhd/v100/indexedfile_v100.h
+        - include/ifhd/v100/indexedfile_v100_pkg.h
+        - include/ifhd/v110/indexedfilereader_v110.h
+        - include/ifhd/v110/indexedfile_v110.h
+        - include/ifhd/v110/indexedfile_v110_pkg.h
+        - include/ifhd/v201_v301/indexedfilehelper_v201_v301.h
+        - include/ifhd/v201_v301/indexedfilereader_v201_v301.h
+        - include/ifhd/v201_v301/indexedfilewriter_v201_v301.h
+        - include/ifhd/v201_v301/indexedfile_types_v201_v301.h
+        - include/ifhd/v201_v301/indexedfile_v201_v301.h
+        - include/ifhd/v201_v301/indexedfile_v201_v301_pkg.h
+        - include/ifhd/v201_v301/indexreadtable_v201_v301.h
+        - include/ifhd/v201_v301/indexwritetable_v201_v301.h
+        - include/ifhd/v400/indexedfilehelper_v400.h
+        - include/ifhd/v400/indexedfilereader_v400.h
+        - include/ifhd/v400/indexedfilewriter_v400.h
+        - include/ifhd/v400/indexedfile_types_v400.h
+        - include/ifhd/v400/indexedfile_v400.h
+        - include/ifhd/v400/indexedfile_v400_pkg.h
+        - include/ifhd/v400/indexreadtable_v400.h
+        - include/ifhd/v400/indexwritetable_v400.h
+        - include/ifhd/v500/indexedfilehelper_v500.h
+        - include/ifhd/v500/indexedfilereader_v500.h
+        - include/ifhd/v500/indexedfilewriter_v500.h
+        - include/ifhd/v500/indexedfile_types_v500.h
+        - include/ifhd/v500/indexedfile_v500.h
+        - include/ifhd/v500/indexedfile_v500_pkg.h
+        - include/ifhd/v500/indexreadtable_v500.h
+        - include/ifhd/v500/indexwritetable_v500.h
+        - include/utils5extension/file.h
+        - include/utils5extension/fileringbuffer.h
+        - include/utils5extension/utils5extension.h
+        - include/utils5extension/utils5ext_pkg.h
+        - lib/cmake/adtfdat_processing/adtfdat_processing-config-version.cmake
+        - lib/cmake/adtfdat_processing/adtfdat_processing-config.cmake
+        - lib/cmake/adtfdat_processing/adtfdat_processing-targets.cmake
+        - lib/cmake/adtf_file/adtf_file-config-version.cmake
+        - lib/cmake/adtf_file/adtf_file-config.cmake
+        - lib/cmake/adtf_file/adtf_file-targets.cmake
+        - lib/cmake/ifhd_file/ifhd_file-config-version.cmake
+        - lib/cmake/ifhd_file/ifhd_file-config.cmake
+        - lib/cmake/ifhd_file/ifhd_file-targets.cmake
+        - lib/cmake/utils5extension/utils5extension-config-version.cmake
+        - lib/cmake/utils5extension/utils5extension-config.cmake
+        - lib/cmake/utils5extension/utils5extension-targets.cmake
+        - MPL2.0.txt
+        - README.md
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/ADTF CAN Playback.adtfsession
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/ADTF CAN Playback.adtfuilayout
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/adtfgraphs/ADTF CAN Playback.adtfconfiglayout
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/adtfgraphs/ADTF CAN Playback.adtfgraph
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/adtfgraphs/ADTF CAN Playback.adtfproperties
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/adtfsystems/ADTF CAN Playback.adtfproperties
+        - src/examples/canwriter/adtfproject/canwriter/adtfsessions/adtfsystems/ADTF CAN Playback.adtfsystem
+        - src/examples/canwriter/adtfproject/canwriter/canwriter.adtfproject
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/canwriter_adtf2.prj
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/info.txt
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system.Common.runninglayout
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system.config_layout
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system.xml
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system_config_files/Playback/__kernel_scheduling.config
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system_config_files/Playback/__layout_settings.config
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system_config_files/Recording/__kernel_scheduling.config
+        - src/examples/canwriter/adtfproject/canwriter_adtf2/config/system_config_files/Recording/__layout_settings.config
+        - src/examples/canwriter/canwriter.cpp
+        - src/examples/canwriter/can_stream_type_definitions.h
+        - src/examples/canwriter/CMakeLists.txt
+        - src/examples/canwriter/readme.txt
+        - src/examples/CMakeLists.txt
+        - src/examples/csv_processor/CMakeLists.txt
+        - src/examples/csv_processor/csv_processor.cpp
+        - src/examples/csv_processor/csv_processor.h
+        - src/examples/csv_processor/readme.txt
+        - src/examples/csv_processor/test/CMakeLists.txt
+        - src/examples/csv_processor/test/test_csv_processor.cpp
+        - src/examples/csv_reader/CMakeLists.txt
+        - src/examples/csv_reader/csv_reader.cpp
+        - src/examples/csv_reader/csv_reader.h
+        - src/examples/csv_reader/readme.txt
+        - src/examples/csv_reader/test/CMakeLists.txt
+        - src/examples/csv_reader/test/test.csv
+        - src/examples/csv_reader/test/test_csv_reader.cpp
+        - src/examples/fileaccess/CMakeLists.txt
+        - src/examples/fileaccess/fileaccess.cpp
+        - src/examples/fileaccess/readme.txt
+        - src/examples/referencedfiles/CMakeLists.txt
+        - src/examples/referencedfiles/readme.txt
+        - src/examples/referencedfiles/referencedfiles.cpp
+
+release:
+    conditions:
+        deb:
+            build_type: Release
+    files:
+        - bin/csv_processor.adtffileplugin
+        - bin/csv_reader.adtffileplugin
+        - lib/cmake/adtfdat_processing/adtfdat_processing-targets-release.cmake
+        - lib/cmake/adtf_file/adtf_file-targets-release.cmake
+        - lib/cmake/ifhd_file/ifhd_file-targets-release.cmake
+        - lib/cmake/utils5extension/utils5extension-targets-release.cmake
+
+debug:
+    conditions:
+        rel:
+            build_type: Debug
+    files:
+        - bin/csv_processord.adtffileplugin
+        - bin/csv_readerd.adtffileplugin
+        - lib/cmake/adtfdat_processing/adtfdat_processing-targets-debug.cmake
+        - lib/cmake/adtf_file/adtf_file-targets-debug.cmake
+        - lib/cmake/ifhd_file/ifhd_file-targets-debug.cmake
+        - lib/cmake/utils5extension/utils5extension-targets-debug.cmake
+
+linux_and_qnx_release:
+    conditions:
+        lagr_linux:
+            os: Linux
+            build_type: Release
+        lagr_neutrino:
+            os: Neutrino
+            build_type: Release
+    files:
+        - bin/adtf_dattool
+        - bin/canwriter
+        - bin/fileaccess
+        - bin/referencedfiles
+        - lib/libadtfdat_processing.a
+        - lib/libadtf_file.a
+        - lib/libifhd_file.a
+        - lib/libutils5extension.a
+
+linux_and_qnx_debug:
+    conditions:
+        lagd_linux:
+            os: Linux
+            build_type: Debug
+        lagd_neutrino:
+            os: Neutrino
+            build_type: Debug
+    files:
+        - bin/adtf_dattoold
+        - bin/canwriterd
+        - bin/fileaccessd
+        - bin/referencedfilesd
+        - lib/libadtfdat_processingd.a
+        - lib/libadtf_filed.a
+        - lib/libifhd_filed.a
+        - lib/libutils5extensiond.a
+
+windows_release:
+    conditions:
+        lagr_win:
+            os: Windows
+            build_type: Release
+    files:
+        - bin/adtf_dattool.exe
+        - bin/canwriter.exe
+        - bin/fileaccess.exe
+        - bin/referencedfiles.exe
+        - lib/adtfdat_processing.lib
+        - lib/adtf_file.lib
+        - lib/ifhd_file.lib
+        - lib/utils5extension.lib
+
+windows_debug:
+    conditions:
+        lagd_win:
+            os: Windows
+            build_type: Debug
+    files:
+        - bin/adtf_dattoold.exe
+        - bin/canwriterd.exe
+        - bin/fileaccessd.exe
+        - bin/referencedfilesd.exe
+        - lib/adtfdat_processingd.lib
+        - lib/adtf_filed.lib
+        - lib/ifhd_filed.lib
+        - lib/utils5extensiond.lib
+
+documentation:
+    conditions:
+        doc_x86_64:
+            arch: x86_64
+        doc_x86:
+            arch: x86
+    files:
+        - doc/html/.+\.css
+        - doc/html/.+\.html
+        - doc/html/.+\.js
+        - doc/html/.+\.map
+        - doc/html/.+\.md5
+        - doc/html/.+\.png
+

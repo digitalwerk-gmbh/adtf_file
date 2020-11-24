@@ -6,5 +6,5 @@ add_definitions(-DTEST_FILES_DIR="${TEST_FILES_DIR}")
 add_executable(${TEST} tester_indexedfilehelper.cpp)
 target_link_libraries(${TEST} gtest gtest_main ifhd_file)
 
-ifhd_test(${TEST} ${TEST})
+add_test(${TEST} ${TEST})
 set_target_properties(${TEST} PROPERTIES FOLDER test/ifhd)

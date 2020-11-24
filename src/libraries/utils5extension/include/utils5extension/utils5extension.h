@@ -34,6 +34,7 @@
 #include <a_util/filesystem.h>
 #include <a_util/datetime.h>
 #include <a_util/memory.h>
+#include <a_util/strings.h>
 #include <a_util/xml.h>
 #include <limits>
 #include <queue>

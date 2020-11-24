@@ -32,26 +32,10 @@
 #include "object.h"
 #include "default_sample.h"
 #include "stream_type.h"
+#include "base_reader.h"
 
 namespace adtf_file
 {
-
-namespace exceptions
-{
-    using ifhd::exceptions::EndOfFile;
-}
-
-class Extension
-{
-    public:
-        std::string name;
-        uint16_t stream_id;
-        uint32_t user_id;
-        uint32_t type_id;
-        uint32_t version_id;
-        size_t data_size;
-        const void* data;
-};
 
 class InputStream
 {
@@ -95,22 +79,6 @@ class StreamTypeDeserializers: private std::unordered_map<std::string, std::shar
             }
 
             deserializer->second->deserialize(stream, stream_type);
-        }
-};
-
-class StreamTypeFactory
-{
-    public:
-        virtual std::shared_ptr<StreamType> build() const = 0;
-};
-
-template <typename STREAM_TYPE_CLASS>
-class stream_type_factory: public StreamTypeFactory
-{
-    public:
-        std::shared_ptr<StreamType> build() const override
-        {
-            return std::make_shared<STREAM_TYPE_CLASS>();
         }
 };
 
@@ -166,42 +134,7 @@ class SampleDeserializerFactories:
         }
 };
 
-class SampleFactory
-{
-    public:
-        virtual std::shared_ptr<Sample> build() const = 0;
-};
-
-template <typename SAMPLE_CLASS>
-class sample_factory: public SampleFactory
-{
-    public:
-        std::shared_ptr<Sample> build() const override
-        {
-            return std::make_shared<SAMPLE_CLASS>();
-        }
-};
-
-class Stream
-{
-    public:
-        uint16_t stream_id;
-        std::string name;
-        uint64_t item_count;
-        std::chrono::nanoseconds timestamp_of_first_item;
-        std::chrono::nanoseconds timestamp_of_last_item;
-        std::shared_ptr<const StreamType> initial_type;
-};
-
-class FileItem
-{
-    public:
-        uint16_t stream_id;
-        std::chrono::nanoseconds time_stamp;
-        std::shared_ptr<const StreamItem> stream_item;
-};
-
-class Reader
+class Reader: public BaseReader
 {
     public:
         Reader() = delete;
@@ -211,33 +144,33 @@ class Reader
                std::shared_ptr<SampleFactory> sample_factory = std::make_shared<adtf_file::sample_factory<DefaultSample>>(),
                std::shared_ptr<StreamTypeFactory> stream_type_factory = std::make_shared<adtf_file::stream_type_factory<DefaultStreamType>>(),
                bool ignore_unsupported_streams = false);
-        virtual ~Reader();
+        ~Reader() override;
 
         Reader(const Reader&) = delete;
         Reader(Reader&&) = default;
 
-        uint32_t getFileVersion() const;
-        a_util::datetime::DateTime getDateTime() const;
-        std::chrono::nanoseconds getFirstTime() const;
-        std::chrono::nanoseconds getLastTime() const;
-        std::chrono::nanoseconds getDuration() const;
-        std::string getDescription() const;
+        uint32_t getFileVersion() const override;
+        a_util::datetime::DateTime getDateTime() const override;
+        std::chrono::nanoseconds getFirstTime() const override;
+        std::chrono::nanoseconds getLastTime() const override;
+        std::chrono::nanoseconds getDuration() const override;
+        std::string getDescription() const override;
 
-        const std::vector<Extension>& getExtensions() const;
-        const std::vector<Stream>& getStreams() const;
-        uint64_t getItemCount() const;
+        const std::vector<Extension>& getExtensions() const override;
+        const std::vector<Stream>& getStreams() const override;
+        uint64_t getItemCount() const override;
 
-        uint64_t getItemIndexForTimeStamp(std::chrono::nanoseconds time_stamp);
-        uint64_t getItemIndexForStreamItemIndex(uint16_t stream_id, uint64_t stream_item_index);
-        std::shared_ptr<const StreamType> getStreamTypeBefore(uint64_t item_index, uint16_t stream_id, bool update_sample_deserializer);
+        uint64_t getItemIndexForTimeStamp(std::chrono::nanoseconds time_stamp) override;
+        uint64_t getItemIndexForStreamItemIndex(uint16_t stream_id, uint64_t stream_item_index) override;
+        std::shared_ptr<const StreamType> getStreamTypeBefore(uint64_t item_index, uint16_t stream_id, bool update_sample_deserializer) override;
 
-        void seekTo(uint64_t item_index);
-        FileItem getNextItem();
+        void seekTo(uint64_t item_index) override;
+        FileItem getNextItem() override;
 
         /**
          * @return the index of the next item, or -1 if the file is empty.
          */
-        int64_t getNextItemIndex();
+        int64_t getNextItemIndex() override;
 
     private:
         std::shared_ptr<const StreamType> buildType(const std::string& id, InputStream& stream);
@@ -256,6 +189,65 @@ class Reader
         std::unordered_map<size_t, std::shared_ptr<SampleDeserializer>> _stream_sample_deserializers;
         std::shared_ptr<SampleFactory> _sample_factory;
         std::shared_ptr<StreamTypeFactory> _stream_type_factory;
+};
+
+class AdtfDatReaderFactory: public ReaderFactory
+{
+public:
+    AdtfDatReaderFactory(StreamTypeDeserializers type_factories,
+                         SampleDeserializerFactories sample_deserializer_factories):
+          _type_factories(type_factories),
+          _sample_deserializer_factories(sample_deserializer_factories)
+    {
+    }
+
+    ~AdtfDatReaderFactory() override = default;
+
+    std::string getName() const override
+    {
+        return "ADTF DAT";
+    }
+
+    std::unique_ptr<BaseReader> makeReader(const std::string& file_name,
+                                           std::shared_ptr<SampleFactory> sample_factory,
+                                           std::shared_ptr<StreamTypeFactory> stream_type_factory,
+                                           bool ignore_unsupported_streams) const override
+    {
+        return std::make_unique<Reader>(file_name,
+                                        _type_factories,
+                                        _sample_deserializer_factories,
+                                        sample_factory,
+                                        stream_type_factory,
+                                        ignore_unsupported_streams);
+    }
+
+private:
+    StreamTypeDeserializers _type_factories;
+    SampleDeserializerFactories _sample_deserializer_factories;
+};
+
+class DefaultAdtfDatReaderFactory: public adtf_file::ReaderFactory
+{
+public:
+    std::string getName() const override
+    {
+        return "ADTF DAT";
+    }
+
+    std::unique_ptr<adtf_file::BaseReader> makeReader(const std::string& file_name,
+                                                      std::shared_ptr<adtf_file::SampleFactory> sample_factory,
+                                                      std::shared_ptr<adtf_file::StreamTypeFactory> stream_type_factory,
+                                                      bool ignore_unsupported_streams) const override
+    {
+        return std::make_unique<adtf_file::Reader>(file_name,
+                                                   adtf_file::getFactories<adtf_file::StreamTypeDeserializers,
+                                                                           adtf_file::StreamTypeDeserializer>(),
+                                                   adtf_file::getFactories<adtf_file::SampleDeserializerFactories,
+                                                                           adtf_file::SampleDeserializerFactory>(),
+                                                   sample_factory,
+                                                   stream_type_factory,
+                                                   ignore_unsupported_streams);
+    }
 };
 
 inline std::string getShortDescription(const std::string& description)

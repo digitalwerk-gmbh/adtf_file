@@ -30,6 +30,7 @@
     #include <unistd.h>
     #include <string.h>
     #include <errno.h>
+    #include <stdio.h>
 #endif // WIN32
 
 #include <utils5extension/utils5extension.h>
@@ -179,10 +180,12 @@ void freePageAlignedMemory(void* memory)
     }
 }
 
-static size_t local_get_default_sector_size()
+#ifndef WIN32
+static int local_get_default_sector_size()
 {
     return 512;
 }
+#endif //WIN32
 
 size_t getSectorSizeFor(const a_util::filesystem::Path& filename)
 {
@@ -253,7 +256,7 @@ void File::initialize()
     _read_cache_enabled         = false;
     _reference                = false;
     _system_cache_disabled      = false;
-    _sector_size               = getDefaultSectorSize();
+    _sector_size               = static_cast<int>(getDefaultSectorSize());
     _sector_bytes_to_skip        = 0;
 }
 
@@ -325,7 +328,7 @@ void File::open(const a_util::filesystem::Path& filename, uint32_t mode)
    // openFilename.MakeNativeSlash();
 
     _system_cache_disabled      = false;
-    _sector_size               = getDefaultSectorSize();
+    _sector_size               = static_cast<int>(getDefaultSectorSize());
     _sector_bytes_to_skip     = 0;
 
     #ifdef WIN32
@@ -384,7 +387,7 @@ void File::open(const a_util::filesystem::Path& filename, uint32_t mode)
         {
             flags     |= FILE_FLAG_NO_BUFFERING;
             _system_cache_disabled  = true;
-            _sector_size           = getSectorSizeFor(open_filename);
+            _sector_size           = static_cast<int>(getSectorSizeFor(open_filename));
         }
 
         _file = CreateFile(open_filename.toString().c_str(),

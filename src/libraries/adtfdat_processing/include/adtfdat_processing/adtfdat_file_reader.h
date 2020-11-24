@@ -28,28 +28,12 @@ namespace ant
 /**
  * An implementation of a reader that can read ADTFDAT files.
  */
-class AdtfDatReader : public adtf::dat::ant::Reader
+class AdtfDatReader : public ReaderWrapper
 {
 public:
-    std::string getReaderIdentifier() const override
-    {
-        return "adtfdat";
-    }
-
-    std::pair<bool, std::string> isCompatible(const std::string& url) const override;
-    void open(const std::string& url) override;
-    std::vector<adtf_file::Stream> getStreams() const override;
-
-    std::vector<adtf_file::Extension> getExtensions() const;
-
-    adtf_file::FileItem getNextItem() override;
-
-    double getProgress() const override;
-
-private:
-    std::unique_ptr<adtf_file::Reader> _reader;
-    size_t _processed_items = 0;
+    AdtfDatReader();
 };
+
 }
 
 using ant::AdtfDatReader;

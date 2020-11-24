@@ -12,6 +12,7 @@ add_library(${PKG_NAME} STATIC
     include/adtfdat_processing/multiplexer.h
     include/adtfdat_processing/processor.h
     include/adtfdat_processing/reader.h
+    src/reader.cpp
     src/adtfdat_file_reader.cpp
     src/demultiplexer.cpp
     src/multiplexer.cpp)

@@ -71,6 +71,12 @@ public:
     virtual adtf_file::FileItem getNextItem() = 0;
 };
 
+class ExtensionsReader
+{
+public:
+    virtual std::vector<adtf_file::Extension> getExtensions() const = 0;
+};
+
 /**
  * Factory that creates readers.
  */
@@ -188,13 +194,54 @@ public:
         return capable_readers;
     }
 };
+
+class ReaderWrapper:
+    public adtf::dat::ant::Reader,
+    public adtf::dat::ant::ExtensionsReader
+{
+public:
+    ReaderWrapper(std::shared_ptr<adtf_file::ReaderFactory> factory, const std::string& identifier);
+
+    std::string getReaderIdentifier() const override;
+    std::pair<bool, std::string> isCompatible(const std::string& url) const override;
+    void open(const std::string& url) override;
+    std::vector<adtf_file::Stream> getStreams() const override;
+    std::vector<adtf_file::Extension> getExtensions() const override;
+    adtf_file::FileItem getNextItem() override;
+    double getProgress() const override;
+
+private:
+    std::unique_ptr<adtf_file::BaseReader> makeReader(const std::string& url) const;
+
+    std::shared_ptr<adtf_file::ReaderFactory> _factory;
+    std::unique_ptr<adtf_file::BaseReader> _reader;
+    std::string _identifier;
+    size_t _processed_items = 0;
+};
+
+class ReaderWrapperFactory: public ReaderFactory
+{
+public:
+    ReaderWrapperFactory(std::shared_ptr<adtf_file::ReaderFactory> factory);
+
+    std::shared_ptr<Reader> make() const override;
+
+private:
+    std::shared_ptr<adtf_file::ReaderFactory> _factory;
+};
+
+ReaderFactories getReaderFactories();
+
 }
 
 using ant::Reader;
-using ant::Reader;
+using ant::ExtensionsReader;
 using ant::ReaderFactory;
 using ant::ReaderFactoryImplementation;
 using ant::findStream;
 using ant::ReaderFactories;
+using ant::ReaderWrapper;
+using ant::getReaderFactories;
+
 }
 }

@@ -35,7 +35,7 @@ ReferencedFilesExtension& ReferencedFilesExtension::operator=(ReferencedFilesExt
     return *this;
 }
 
-ReferencedFilesExtension::ReferencedFilesExtension(const Reader& reader)
+ReferencedFilesExtension::ReferencedFilesExtension(const BaseReader& reader)
 {
     read(reader);
 }
@@ -45,7 +45,7 @@ ReferencedFilesExtension::ReferencedFilesExtension(const std::vector<a_util::fil
 }
 
 
-void ReferencedFilesExtension::read(const Reader& reader)
+void ReferencedFilesExtension::read(const BaseReader& reader)
 {
     auto extensions = reader.getExtensions();
     for (auto extension : extensions)

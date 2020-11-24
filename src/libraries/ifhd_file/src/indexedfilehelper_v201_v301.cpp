@@ -19,6 +19,7 @@
  */
 
 #include <ifhd/ifhd.h>
+#include <cstdio>
 
 namespace ifhd
 {

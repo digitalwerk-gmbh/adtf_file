@@ -20,8 +20,10 @@
 
 #include <ifhd/ifhd.h>
 #include <queue>
+#include <cstdio>
 #include <string.h>
 #include <assert.h>
+#include <a_util/strings.h>
 
 #ifdef WIN32
     #include <windows.h>
@@ -81,7 +83,6 @@ static uint8_t chunk_fill_bytes[16] = {0xEE,0xEE,0xEE,0xEE,0xEE,0xEE,0xEE,0xEE,
 /**************************************/
 class IndexedFileWriter::IndexedFileWriterImpl : public RingBuffer::DropCallback
 {
-    IndexedFileWriter* _p;
 
     public:
         ChunkHeader                 internal_write_chunk_header;
@@ -109,6 +110,9 @@ class IndexedFileWriter::IndexedFileWriterImpl : public RingBuffer::DropCallback
         std::thread writer_thread;
         std::atomic<bool> keep_writing_cache_to_disk;
         size_t cache_maximum_write_chunk_size;
+
+    private:
+        IndexedFileWriter* _p;
 
     public:
         explicit IndexedFileWriterImpl(IndexedFileWriter& parent) :
@@ -863,7 +867,7 @@ void IndexedFileWriter::writeIndexTable()
     for (uint16_t stream_id=0; stream_id<=max_stream_id; stream_id++)
     {
         int64_t index_table = _index_table.getBufferSize(stream_id);
-        sprintf(extension_name, "%s%d", IDX_EXT_INDEX, (int) stream_id);
+        std::sprintf(extension_name, "%s%d", IDX_EXT_INDEX, (int) stream_id);
 
         FileExtension* extension_info = nullptr;
         void*          extension_data  = nullptr;
@@ -913,7 +917,7 @@ void IndexedFileWriter::writeIndexTable()
             info.stream_index_offset = _index_table.getIndexOffset(stream_id);
             info.stream_table_index_offset =
                 static_cast<uint32_t>(_index_table.getIndexTableOffset(stream_id));
-            sprintf(extension_name, "%s%d", IDX_EXT_INDEX_ADDITONAL, (int) stream_id);
+            std::sprintf(extension_name, "%s%d", IDX_EXT_INDEX_ADDITONAL, (int) stream_id);
             appendExtension(extension_name,
                             &info,
                             sizeof(info),

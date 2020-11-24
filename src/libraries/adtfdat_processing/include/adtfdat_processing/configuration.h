@@ -18,6 +18,7 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
+#include <stdexcept>
 
 namespace adtf
 {

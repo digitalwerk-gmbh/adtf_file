@@ -22,61 +22,12 @@ namespace dat
 namespace ant
 {
 
-std::pair<bool, std::string> AdtfDatReader::isCompatible(const std::string& url) const
+AdtfDatReader::AdtfDatReader():
+      ReaderWrapper(std::make_shared<adtf_file::DefaultAdtfDatReaderFactory>(),
+                    "adtfdat")
 {
-    try
-    {
-        adtf_file::Reader(
-            url,
-            adtf_file::getFactories<adtf_file::StreamTypeDeserializers,
-                                     adtf_file::StreamTypeDeserializer>(),
-            adtf_file::getFactories<adtf_file::SampleDeserializerFactories,
-                                     adtf_file::SampleDeserializerFactory>(),
-            std::make_shared<adtf_file::sample_factory<adtf_file::DefaultSample>>(),
-            std::make_shared<adtf_file::stream_type_factory<adtf_file::DefaultStreamType>>(),
-            true);
-        return std::make_pair(true, std::string());
-    }
-    catch (const std::exception& error)
-    {
-        return std::make_pair(false, error.what());
-    }
 }
 
-void AdtfDatReader::open(const std::string& url)
-{
-    _reader.reset(new adtf_file::Reader(
-        url,
-        adtf_file::getFactories<adtf_file::StreamTypeDeserializers,
-                                 adtf_file::StreamTypeDeserializer>(),
-        adtf_file::getFactories<adtf_file::SampleDeserializerFactories,
-                                 adtf_file::SampleDeserializerFactory>(),
-        std::make_shared<adtf_file::sample_factory<adtf_file::DefaultSample>>(),
-        std::make_shared<adtf_file::stream_type_factory<adtf_file::DefaultStreamType>>(),
-        true));
-}
-
-std::vector<adtf_file::Stream> AdtfDatReader::getStreams() const
-{
-    return _reader->getStreams();
-}
-
-std::vector<adtf_file::Extension> AdtfDatReader::getExtensions() const
-{
-    return _reader->getExtensions();
-}
-
-adtf_file::FileItem AdtfDatReader::getNextItem()
-{
-    auto next_item = _reader->getNextItem();
-    ++_processed_items;
-    return next_item;
-}
-
-double AdtfDatReader::getProgress() const
-{
-    return static_cast<double>(_processed_items) / _reader->getItemCount();
-}
 }
 }
 }

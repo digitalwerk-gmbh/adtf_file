@@ -24,10 +24,13 @@
 #include "stream_item.h"
 #include "sample.h"
 
+#include <vector>
 #include <chrono>
 #include <cstring>
 #include <functional>
 #include <unordered_map>
+#include <vector>
+#include <stdexcept>
 
 namespace adtf_file
 {

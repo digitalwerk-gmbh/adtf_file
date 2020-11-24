@@ -39,21 +39,8 @@ static adtf_file::PluginInitializer initializer([] {
         std::make_shared<adtf::dat::ReaderFactoryImplementation<adtf::dat::AdtfDatReader>>());
 });
 
-template <typename FACTORIES, typename FACTORY>
-FACTORIES getAdtfDatFactories()
-{
-    FACTORIES factories;
-
-    for (const auto& factory: adtf_file::getObjects().getAllOfType<FACTORY>())
-    {
-        factories.add(factory);
-    }
-
-    return factories;
-}
-
 void listReaderStreams(const std::shared_ptr<const adtf::dat::Reader>& reader,
-                         const adtf::dat::ProcessorFactories& processor_factories)
+                       const adtf::dat::ProcessorFactories& processor_factories)
 {
     for (auto& stream : reader->getStreams())
     {
@@ -409,9 +396,11 @@ adtf_file::Extension find_required_extension(std::vector<adtf_file::Extension> e
 
 void processExportJob(const ExportJob& export_job,
                       std::function<bool(double)> progress_handler,
+                      const adtf::dat::ReaderFactories& reader_factories,
                       const adtf::dat::ProcessorFactories& processor_factories)
 {
-    auto reader = std::make_shared<adtf::dat::AdtfDatReader>();
+    auto capable_readers = reader_factories.getCapableReaders(export_job.file_name);
+    auto reader = reader_factories.make(capable_readers.begin()->first);
     reader->open(export_job.file_name);
 
     adtf::dat::Demultiplexer demultiplexer(reader, processor_factories);
@@ -445,10 +434,16 @@ void processExportJob(const ExportJob& export_job,
 
     demultiplexer.process(progress_handler);
 
-    auto extensions = reader->getExtensions();
     for (const auto& selected_extension: export_job.extensions)
     {
-        auto existing_extension = find_required_extension(extensions, selected_extension.name);
+        auto extension_reader = std::dynamic_pointer_cast<adtf::dat::ExtensionsReader>(reader);
+        if (!extension_reader)
+        {
+            throw std::runtime_error("The reader " + reader->getReaderIdentifier() + " does not support extensions");
+        }
+        auto extentions = extension_reader->getExtensions();
+
+        auto existing_extension = find_required_extension(extentions, selected_extension.name);
 
         if (selected_extension.output_file_name.empty())
         {
@@ -962,13 +957,9 @@ int main(int argc, char** argv) try
         progress_handler = ProgressDisplay();
     }
 
-    auto processor_factories =
-        getAdtfDatFactories<adtf::dat::ProcessorFactories, adtf::dat::ProcessorFactory>();
-    auto reader_factories =
-        getAdtfDatFactories<adtf::dat::ReaderFactories, adtf::dat::ReaderFactory>();
-    auto sample_serializer_factories =
-        adtf_file::getFactories<adtf_file::SampleSerializerFactories,
-                                 adtf_file::SampleSerializerFactory>();
+    auto processor_factories = adtf_file::getFactories<adtf::dat::ProcessorFactories, adtf::dat::ProcessorFactory>();
+    auto reader_factories = adtf::dat::getReaderFactories();
+    auto sample_serializer_factories = adtf_file::getFactories<adtf_file::SampleSerializerFactories, adtf_file::SampleSerializerFactory>();
 
     for (const auto& source: list_stream_sources)
     {
@@ -979,6 +970,7 @@ int main(int argc, char** argv) try
     {
         processExportJob(export_job,
                          progress_handler,
+                         reader_factories,
                          processor_factories);
     }
 

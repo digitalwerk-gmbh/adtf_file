@@ -20,6 +20,7 @@
 
 #include <ifhd/ifhd.h>
 #include <string.h>
+#include <a_util/strings.h>
 
 namespace ifhd
 {

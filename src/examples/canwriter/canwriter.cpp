@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
+#include <a_util/strings.h>
 
 #include "can_stream_type_definitions.h"
 

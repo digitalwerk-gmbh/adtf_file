@@ -22,6 +22,7 @@
 #include <ifhd/ifhd.h> 
 #include <iostream>
 #include "../../test_helper/test_helper.h"
+#include <a_util/strings.h>
 
 #define TESTFILE TEST_FILES_DIR "/Rec_20090326_155630.dat"
 #define CHUNKCOUNT 114
@@ -837,8 +838,8 @@ DEFINE_TEST(TesterIndexedFileReader,
 
         std::string compare_string = a_util::strings::format("@%d|%d", chunk->stream_id, compare);
         std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-        printf(helper.c_str());
-        printf(compare_string.c_str());
+        printf("%s", helper.c_str());
+        printf("%s", compare_string.c_str());
         A_UTILS_TEST(compare_string == helper);
     }
 }
@@ -873,8 +874,8 @@ DEFINE_TEST(TesterIndexedFileReader,
 
         std::string compare_string = a_util::strings::format("@%d|%d", chunk->stream_id, compare);
         std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-        printf(helper.c_str());
-        printf(compare_string.c_str());
+        printf("%s", helper.c_str());
+        printf("%s", compare_string.c_str());
         A_UTILS_TEST(compare_string == helper);
 
         if (chunk->stream_id == 1)
@@ -925,8 +926,8 @@ DEFINE_TEST(TesterIndexedFileReader,
 
             std::string compare_string = a_util::strings::format("@%u|%d", stream, compare);
             std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-            printf(helper.c_str());
-            printf(compare_string.c_str());
+            printf("%s", helper.c_str());
+            printf("%s", compare_string.c_str());
             A_UTILS_TEST(compare_string == helper);
 
             if (stream == 2)
@@ -973,8 +974,8 @@ DEFINE_TEST(TesterIndexedFileReader,
 
             std::string compare_string = a_util::strings::format("@1|%d", compare);
             std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-            printf(helper.c_str());
-            printf(compare_string.c_str());
+            printf("%s", helper.c_str());
+            printf("%s", compare_string.c_str());
             A_UTILS_TEST(compare_string == helper);
 
             if (compare % 3 == 0)
@@ -983,8 +984,8 @@ DEFINE_TEST(TesterIndexedFileReader,
 
                 std::string compare_string = a_util::strings::format("@2|%d", compare);
                 std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-                printf(helper.c_str());
-                printf(compare_string.c_str());
+                printf("%s", helper.c_str());
+                printf("%s", compare_string.c_str());
                 A_UTILS_TEST(compare_string == helper);
             }
         }

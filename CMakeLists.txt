@@ -9,12 +9,31 @@ cmake_policy(SET CMP0011 NEW)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0028 NEW)
 
-project(adtffile VERSION 0.6.1)
+project(adtffile VERSION 0.7.0)
 
-if (CONAN_COMPILER)
-    message(STATUS "Including Conan build info")
-    include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
-    conan_basic_setup(NO_OUTPUT_DIRS)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 14) # std::make_unique
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Use conan if available
+if(CONAN_COMPILER)
+    if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
+        include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
+    elseif ( EXISTS ${CMAKE_CURRENT_BINARY_DIR}/../conanbuildinfo.cmake)
+        include(${CMAKE_CURRENT_BINARY_DIR}/../conanbuildinfo.cmake)
+    elseif ( EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
+        include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
+    elseif ( EXISTS ${CMAKE_CURRENT_BINARY_DIR}/../conanbuildinfo_multi.cmake)
+        include(${CMAKE_CURRENT_BINARY_DIR}/../conanbuildinfo_multi.cmake)
+    else()
+        message(FATAL_ERROR "Conan build info can't be found.")
+    endif()
+
+    if(CORTEX_WORKSPACE)
+        conan_basic_setup(TARGETS)
+    else()
+        conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
+    endif()
 endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)

@@ -21,9 +21,7 @@ target_link_libraries(${PKG_NAME} a_util_concurrency
                                   a_util_memory
                                   a_util_xml)
 
-if(NOT WIN32)
-    target_link_libraries(${PKG_NAME} pthread)
-endif(NOT WIN32)
+target_link_libraries(${PKG_NAME} $<$<PLATFORM_ID:Linux>:pthread>)
 
 set_target_properties(${PKG_NAME} PROPERTIES FOLDER libraries)
 

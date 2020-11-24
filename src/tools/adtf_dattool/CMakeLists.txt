@@ -13,5 +13,5 @@ install(TARGETS adtf_dattool
 )
 
 if(ifhd_cmake_enable_integrated_tests)
-    add_subdirectory(test)
+    add_subdirectory(test/dattool)
 endif()

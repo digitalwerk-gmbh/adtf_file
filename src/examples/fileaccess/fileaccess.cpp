@@ -24,6 +24,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <a_util/strings.h>
 
 // initalize ADTF File and Plugin Mechanism
 static adtf_file::Objects oObjects;
@@ -32,7 +33,7 @@ static adtf_file::PluginInitializer oInitializer([]
     adtf_file::add_standard_objects();
 });
 
-void query_file_info(adtf_file::Reader& reader)
+void query_file_info(adtf_file::BaseReader& reader)
 {
     using namespace adtf_file;
 
@@ -87,7 +88,7 @@ class StreamsInfo
     typedef std::map<uint16_t, std::string> StreamNameMap;
 
     public:
-        StreamsInfo(adtf_file::Reader& reader)
+        StreamsInfo(adtf_file::BaseReader& reader)
         {
             auto streams = reader.getStreams();
             for (auto current_stream : streams)
@@ -158,7 +159,7 @@ class StreamsInfo
 };
 
 
-void access_file_data(adtf_file::Reader& reader, const std::string& csv_file_path)
+void access_file_data(adtf_file::BaseReader& reader, const std::string& csv_file_path)
 {
     using namespace adtf_file;
     
@@ -230,18 +231,19 @@ void access_file_data(adtf_file::Reader& reader, const std::string& csv_file_pat
     csv_file.close();
 }
 
-adtf_file::Reader create_reader(const a_util::filesystem::Path& adtfdat_file_path)
+adtf_file::ReaderFactories get_reader_factories()
 {
-    //open file -> create reader from former added settings
-    adtf_file::Reader reader(adtfdat_file_path,
-                             adtf_file::getFactories<adtf_file::StreamTypeDeserializers,
-                                                     adtf_file::StreamTypeDeserializer>(),
-                             adtf_file::getFactories<adtf_file::SampleDeserializerFactories,
-                                                     adtf_file::SampleDeserializerFactory>(),
-                             std::make_shared<adtf_file::sample_factory<adtf_file::DefaultSample>>(),
-                             std::make_shared<adtf_file::stream_type_factory<adtf_file::DefaultStreamType>>());
+    auto factories = adtf_file::getFactories<adtf_file::ReaderFactories, adtf_file::ReaderFactory>();
+    factories.add(std::make_shared<adtf_file::DefaultAdtfDatReaderFactory>());
 
-    return reader;
+    return factories;
+}
+
+std::unique_ptr<adtf_file::BaseReader> create_reader(const a_util::filesystem::Path& adtfdat_file_path)
+{
+    return get_reader_factories().makeReader(adtfdat_file_path,
+                                             std::make_shared<adtf_file::sample_factory<adtf_file::DefaultSample>>(),
+                                             std::make_shared<adtf_file::stream_type_factory<adtf_file::DefaultStreamType>>());
 }
 
 int main(int argc, char* argv[])
@@ -285,10 +287,10 @@ int main(int argc, char* argv[])
         auto reader = create_reader(adtfdat_file);
     
         //print information about adtfdat|dat file
-        query_file_info(reader);
+        query_file_info(*reader);
     
         //export sample data
-        access_file_data(reader, csv_file);
+        access_file_data(*reader, csv_file);
     }
     catch (const std::exception& ex)
     {

@@ -29,5 +29,5 @@ target_compile_options(${TEST} PRIVATE
 
 add_dependencies(${TEST} test_plugin test_plugin_old test_plugin_old_no_version)
 
-ifhd_test(${TEST} ${TEST})
+add_test(${TEST} ${TEST})
 set_target_properties(${TEST} PROPERTIES FOLDER test/adtf_file)

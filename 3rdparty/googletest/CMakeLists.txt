@@ -20,6 +20,10 @@ set_target_properties(gmock gmock_main gtest gtest_main PROPERTIES FOLDER 3rdpar
 # /FC causes the Microsoft compilers to make __FILE__ standard compliant
 # Without it, the macro will contain a relative path which is bad for tests
 target_compile_options(gtest INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/FC>)
+target_compile_definitions(gtest PUBLIC $<$<VERSION_GREATER_EQUAL:$<CXX_COMPILER_VERSION>,19.10>:_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING>)
+target_compile_definitions(gtest_main PUBLIC $<$<VERSION_GREATER_EQUAL:$<CXX_COMPILER_VERSION>,19.10>:_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING>)
+target_compile_definitions(gmock PUBLIC $<$<VERSION_GREATER_EQUAL:$<CXX_COMPILER_VERSION>,19.10>:_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING>)
+target_compile_definitions(gmock_main PUBLIC $<$<VERSION_GREATER_EQUAL:$<CXX_COMPILER_VERSION>,19.10>:_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING>)
 
 if(gtest_disable_installation)
     configure_file(remove_gtest_from_installation.cmake.in

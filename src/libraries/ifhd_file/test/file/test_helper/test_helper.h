@@ -30,4 +30,4 @@
 #define A_UTILS_TEST_ERR_RESULT_EXT(expression, errordesc) ASSERT_ANY_THROW(expression)
 
 #define DEFINE_TEST(tester_class, tester_fc, val1, val2, val3, val4, val5, val6, val7, val8) GTEST_TEST(tester_fc, tester_class)
-#endif TEST_IFHD_HELPER
+#endif // TEST_IFHD_HELPER

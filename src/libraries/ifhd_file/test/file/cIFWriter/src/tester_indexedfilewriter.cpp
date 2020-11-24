@@ -23,6 +23,7 @@
 #include <ifhd/ifhd.h> 
 #include <iostream>
 #include "../../test_helper/test_helper.h"
+#include <a_util/strings.h>
 
 #define TESTFILE TEST_FILES_DIR "/test_dat_file.dat"
 #define TESTFILEHISTORY TEST_FILES_DIR "/test_history_dat_file.dat"
@@ -135,7 +136,7 @@ DEFINE_TEST(TesterIndexedFileWriter,
     IndexedFileWriter writer;
     char additional[]="This is my extra info";
     char additional_modify[]="This is my unmodified info";
-    char *data = "blabla";
+    const char * const data = "blabla";
     A_UTILS_TEST_ERR_RESULT_EXT(writer.setStreamName(77,"blubber"), "no file created yet");
     A_UTILS_TEST_ERR_RESULT_EXT(writer.setStreamName(77,NULL), "streamName is NULL-pointer");
     A_UTILS_TEST_ERR_RESULT_EXT(writer.setAdditionalStreamInfo(77,NULL,0,false),
@@ -186,7 +187,7 @@ DEFINE_TEST(TesterIndexedFileWriter,
     using namespace ifhd::v400;
     IndexedFileWriter writer;
     char additional[]="This is my extra info";
-    char *data = "blabla";
+    const char * const data = "blabla";
 
 
     A_UTILS_TEST_RESULT_EXT(writer.create(TESTFILE,
@@ -294,8 +295,8 @@ DEFINE_TEST(TesterIndexedFileWriter,
 
             std::string compare_string = a_util::strings::format("@%d|%d", chunk->stream_id, compare);
             std::string helper(static_cast<char*>(data), chunk->size - sizeof(ChunkHeader));
-            printf(helper.c_str());
-            printf(compare_string.c_str());
+            printf("%s", helper.c_str());
+            printf("%s", compare_string.c_str());
             A_UTILS_TEST(compare_string == helper);
         }
     }

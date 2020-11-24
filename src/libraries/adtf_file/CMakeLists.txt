@@ -17,6 +17,7 @@ add_library(${PKG_NAME} STATIC
     include/adtf_file/adtf3/adtf3_sample_info.h
     include/adtf_file/adtf3/adtf3_stream_type_deserializer.h
     include/adtf_file/adtf3/adtf3_stream_type_serializer.h
+    include/adtf_file/base_reader.h
     include/adtf_file/adtf_file_reader.h
     include/adtf_file/adtf_file_writer.h
     include/adtf_file/default_sample.h
@@ -59,16 +60,11 @@ target_compile_options(${PKG_NAME} PRIVATE
                        $<$<CXX_COMPILER_ID:GNU>:-pedantic -Wall -fPIC>
                        $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
-target_include_directories(${PKG_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/cityhash)
-
-target_include_directories(${PKG_NAME}
-    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-
+target_include_directories(${PKG_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/3rdparty/cityhash
+                                       PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 target_link_libraries(${PKG_NAME} utils5extension ifhd_file ddl)
-if(NOT WIN32)
-    target_link_libraries(${PKG_NAME} dl)
-endif(NOT WIN32)
+target_link_libraries(${PKG_NAME} $<$<PLATFORM_ID:Linux>:dl>)
 
 install(TARGETS ${PKG_NAME}
         EXPORT ${PKG_NAME}
