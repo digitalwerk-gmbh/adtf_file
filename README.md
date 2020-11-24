@@ -17,7 +17,7 @@ This library contains following internal packages:
  
 ### adtf_file (see src/libraries/adtf_file)
  
-The ADTF File Package with `adtf_file::Writer` and `adtf_file::Reader`. Depending on the ADTF File Version you 
+The ADTF File Package with 'adtf_file::Writer' and 'adtf_file::Reader'. Depending on the ADTF File Version you 
 may create and read Indexed Files with samples.
   
 ### ifhd_file (see src/libraries/ifhd_file)
@@ -25,8 +25,8 @@ may create and read Indexed Files with samples.
 The IFHD File Package with the 'cIndexedFileWriter' and 'cIndexedFileReader'. Depending on the File Version you 
 may create and read Indexed Files. This will not contain sample. The organisation type of data is *chunk*.
  
-* `ifhd::v400` is for ADTF 3.
-* `ifhd::v201_v301` is for ADTF 2.
+* 'ifhd::v400' is for ADTF 3.
+* 'ifhd::v201_v301' is for ADTF 2.
  
 ### utils5extension (see src/libraries/utils5extension)
 
@@ -34,15 +34,15 @@ This Package will provide some further helper classes needed to create an Indexe
 
 ### adtfdat_processing (see src/libraries/adtfdat_processing)
 
-This package will provide interfaces to export `adtf::dat::ant::Processor` and 
-import `adtf::dat::ant::Reader` data from/to a adtf_file::Stream of an .adtfdat file.
+This package will provide interfaces to export (adtf::dat::ant::Processor) and 
+import (adtf::dat::ant::Reader) data from/to a adtf_file::Stream of an .adtfdat file.
 
 ## ADTF File Library Tools
 
 ### adtf_dattool (see src/tools/adtf_dattool)
 
 Command line application to export/import data from/to .adtfdat files by using delivered or 
-customized `adtf::dat::ant::Processor` and `adtf::dat::ant::Reader`. 
+customized adtf::dat::ant::Processor and adtf::dat::ant::Reader. 
 For more information please launch the tool with command --help.
 
 ## Further Documentation
@@ -61,12 +61,12 @@ ________________________
 ### a_util library
  
 The libraries above depend on the *a_util library* 
-See a_util repository at https://github.com/AEV/a_util
+See http://www.cip.audi.de/bitbucket/projects/OPENDEV/repos/odautil
 
 ### DDL library
 
-The libraries above depend on the *DDL library* 
-See ddl repository at https://github.com/AEV/ddl
+The libraries above depend on the *DDL library*
+See http://www.cip.audi.de/bitbucket/projects/OPENDEV/repos/cdddl
  
 ### How to build
 
@@ -90,7 +90,7 @@ See [Versions](./doc/input/page_delivered_versions.md)([link](@ref page_delivere
 
 ##### Build a_util first
  
-The ADTF File Library will only build if an *installation* of *a_util* library is provided.
+The ADTF File Library will only build if a installation of a_utils library is provided.
 Following libraries of the a_utils are necessary:
 * a_util_concurrency
 * a_util_memory
@@ -101,7 +101,7 @@ Following libraries of the a_utils are necessary:
 * a_util_xml
  
 - Use CMAKE at least in version 3.5.1.  
-- Use the tag  "v*a_util-version*" see [Versions](./doc/input/page_delivered_versions.md)
+- Use the Release Branch \p "Release/a_util-version-branch" see [Versions](./doc/input/page_delivered_versions.md)
 - Use CMakeLists.txt within the main directory as Source Directory
 - Do not forget to set a CMAKE_INSTALL_PREFIX 
 - Build and install for Debug and RelWithDebInfo
@@ -111,7 +111,7 @@ Following libraries of the a_utils are necessary:
 The ADTF File Library will only build if a installation of ddl library is provided.
  
 - Use CMAKE at least in version 3.5.1.  
-- Use the tag "v*ddl-version*". see [Versions](./doc/input/page_delivered_versions.md)
+- Use the Release Branch \p "Release/ddl-version-branch". see [Versions](./doc/input/page_delivered_versions.md)
 - Use CMakeLists.txt within the main directory as Source Directory
 - Do not forget to set a CMAKE_INSTALL_PREFIX 
 - Build and install for Debug and RelWithDebInfo
@@ -119,58 +119,8 @@ The ADTF File Library will only build if a installation of ddl library is provid
 ##### Build adtf_file
  
 - Use CMAKE at least in version 3.5.  
-- Use the tag \p "v*adtf-file-version*-branch*" See [Versions](./doc/input/page_delivered_versions.md)
+- Use the Release Branch \p "Release/adtf-file-version-branch" See [Versions](./doc/input/page_delivered_versions.md)
 - Use CMakeLists.txt within the main directory as Source Directory
-- Set the a_util_DIR to your a_util install "lib/cmake/a_util"
+- Set the a_util_DIR to your a_util Install "lib/cmake/a_util"
 - Do not forget to set a CMAKE_INSTALL_PREFIX 
 - Build and install for Debug and RelWithDebInfo
-
-##### CMake options and dependencies
-
-<table>
-<tr>
-<td>
-a_util_DIR
-</td>
-<td>
-must be set to *a_util_install*/lib/cmake/a_util 
-</td>
-<td>
-See a_util repository at https://github.com/AEV/a_util
-</td>
-</tr>
-<tr>
-<td>
-ddl_DIR
-</td>
-<td>
-must be set to *ddl_install*/cmake
-</td>
-<td>
-See ddl repository at https://github.com/AEV/ddl
-</td>
-</tr>
-
-<tr>
-<td>
-ifhd_cmake_enable_documentation ON/OFF 
-</td>
-<td>
-choose wether a documentation is created or not
-</td>
-<td>
-dependency to a valid doxygen executable needed (see http://www.doxygen.nl/)
-</td>
-</tr>
-<tr>
-<td>
-ifhd_cmake_enable_integrated_tests ON/OFF 
-</td>
-<td>
-choose wether the tests where build while building the libraries or not
-</td>
-<td>
-dependency to a valid gtest package needed (see https://github.com/google/googletest)
-</td>
-</tr>
-</table>

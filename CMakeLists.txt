@@ -9,7 +9,7 @@ cmake_policy(SET CMP0011 NEW)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0028 NEW)
 
-project(adtffile VERSION 0.6.0)
+project(adtffile VERSION 0.6.1)
 
 if (CONAN_COMPILER)
     message(STATUS "Including Conan build info")

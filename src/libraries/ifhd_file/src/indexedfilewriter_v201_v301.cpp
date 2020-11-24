@@ -909,7 +909,7 @@ void IndexedFileWriter::writeIndexTable()
         if (stream_id == 0 || _stream_info[stream_id - 1].stream_name[0] != 0)
         {
             //Writes Additional Entries for offsets (if used History Mode of the Writer the file has new layout)
-            AdditionalIndexInfo info;
+            AdditionalIndexInfo info{};
             info.stream_index_offset = _index_table.getIndexOffset(stream_id);
             info.stream_table_index_offset =
                 static_cast<uint32_t>(_index_table.getIndexTableOffset(stream_id));
@@ -1333,7 +1333,7 @@ void IndexedFileWriter::storeToDisk(bool flush)
 
         _cache_flush_ptr   = 0;
         cache_written += first_part;
-        available_data -= first_part;
+        data_size -= first_part;
 
         if (flush && data_size > 0)
         {
