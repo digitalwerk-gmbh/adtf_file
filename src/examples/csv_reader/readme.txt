@@ -16,7 +16,7 @@
 /**
  * \page page_csv_reader Demo CSV Reader
  *
- * Implements an example @ref adtf::dat::ant::Reader to export data from a adtfdat file to a csv file.
+ * Implements an example @ref adtf::dat::ant::Reader to import data from a csv file to an adtfdat file.
  * 
  * \par Location
  * \code
@@ -29,9 +29,9 @@
  * \li how to create ddl::DDLDescription
  * 
  * \par Header
- * \include csv_processor.h
+ * \include csv_reader.h
  *
  * * \par Implementation
- * \include csv_processor.cpp
+ * \include csv_reader.cpp
  * 
  */
